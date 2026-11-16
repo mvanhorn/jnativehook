@@ -25,7 +25,6 @@ import java.util.Iterator;
  * and where they are loaded from.  The <code>jnativehook.lib.locator</code> property should be set to the implementing
  * class prior to loading the <code>GlobalScreen</code> class. If no property is specified,
  * <code>DefaultLibraryLocator</code> will be used.
- * <p>
  *
  * @author Aidas Adomkus (vasiukai@gmail.com)
  * @version 2.0

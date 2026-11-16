@@ -236,15 +236,23 @@ public class NativeMouseEvent extends NativeInputEvent {
         this.button = button;
     }
 
+    /** Native horizontal motion since the preceding event. */
     private int deltaX;
+    /** Native vertical motion since the preceding event. */
     private int deltaY;
 
-    /** @return native horizontal motion since the previous event, or zero if unavailable */
+    /**
+     * Returns native horizontal motion since the previous event, or zero if unavailable.
+     * @return native horizontal motion since the previous event, or zero if unavailable
+     */
     public int getDeltaX() {
         return deltaX;
     }
 
-    /** @return native vertical motion since the previous event, or zero if unavailable */
+    /**
+     * Returns native vertical motion since the previous event, or zero if unavailable.
+     * @return native vertical motion since the previous event, or zero if unavailable
+     */
     public int getDeltaY() {
         return deltaY;
     }

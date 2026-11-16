@@ -26,7 +26,6 @@ import java.util.concurrent.TimeUnit;
 /**
  * Default implementation of the <code>ExecutorService</code> used to dispatch native events.  This
  * is effectively the same as calling {@link java.util.concurrent.Executors#newSingleThreadExecutor}.
- * <p>
  *
  * @author Alexander Barker (<a href="mailto:alex@1stleg.com">alex@1stleg.com</a>)
  * @version 2.0

@@ -27,6 +27,14 @@ import java.awt.event.KeyEvent;
  * @since 2.1
  */
 public abstract class AbstractSwingInputAdapter extends Component {
+    /** Creates an adapter for converting native input to AWT events. */
+    public AbstractSwingInputAdapter() { }
+
+    /**
+     * Converts native modifier flags to the corresponding AWT modifier masks.
+     * @param nativeModifiers native keyboard and mouse modifier flags
+     * @return the combined legacy and extended AWT masks
+     */
     @SuppressWarnings("deprecation")
     protected int getJavaModifiers(int nativeModifiers) {
         int modifiers = 0x00;

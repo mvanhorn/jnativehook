@@ -28,7 +28,6 @@ import java.util.EventObject;
  * The root event class for all native-level input events.  Input events are
  * delivered to listeners as they are received by the native source. Native suppression may be requested with {@link #consume()}. There is no guarantee that the events will be received by
  * Java before they are delivered natively.
- * <p>
  *
  * @author Alexander Barker (<a href="mailto:alex@1stleg.com">alex@1stleg.com</a>)
  * @version 2.1
@@ -151,12 +150,18 @@ public class NativeInputEvent extends EventObject {
         modifiers |= CONSUMED_MASK;
     }
 
-    /** @return whether native suppression was requested */
+    /**
+     * Returns whether native suppression was requested.
+     * @return whether native suppression was requested
+     */
     public boolean isConsumed() {
         return (modifiers & CONSUMED_MASK) != 0;
     }
 
-    /** @return whether the native backend identified software generated input */
+    /**
+     * Returns whether the native backend identified software generated input.
+     * @return whether the native backend identified software generated input
+     */
     public boolean isEmulated() {
         return (modifiers & EMULATED_MASK) != 0;
     }

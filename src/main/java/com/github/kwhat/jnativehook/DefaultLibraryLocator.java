@@ -42,6 +42,9 @@ import java.util.logging.Logger;
  * @see NativeLibraryLocator
  */
 public class DefaultLibraryLocator implements NativeLibraryLocator {
+    /** Creates the default native-library locator. */
+    public DefaultLibraryLocator() { }
+
     private static final Logger log = Logger.getLogger(GlobalScreen.class.getPackage().getName());
 
     /**

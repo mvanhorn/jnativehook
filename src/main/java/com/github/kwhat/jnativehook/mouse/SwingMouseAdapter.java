@@ -29,6 +29,9 @@ import java.awt.event.MouseListener;
  */
 public class SwingMouseAdapter extends AbstractSwingInputAdapter implements NativeMouseListener, MouseListener {
 
+    /** Creates an adapter for forwarding native mouse button events to AWT listeners. */
+    public SwingMouseAdapter() { }
+
     @Override
     public void nativeMouseClicked(NativeMouseEvent nativeEvent) {
         this.mouseClicked(this.getJavaKeyEvent(nativeEvent));
@@ -59,6 +62,11 @@ public class SwingMouseAdapter extends AbstractSwingInputAdapter implements Nati
     @Override
     public void mouseExited(MouseEvent mouseEvent) {}
 
+    /**
+     * Converts a native mouse button event to its AWT equivalent.
+     * @param nativeEvent the native mouse event
+     * @return the corresponding AWT mouse event
+     */
     protected MouseEvent getJavaKeyEvent(NativeMouseEvent nativeEvent) {
         return new MouseEvent(
             this,

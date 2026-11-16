@@ -29,6 +29,9 @@ import java.awt.event.KeyListener;
  */
 public class SwingKeyAdapter extends AbstractSwingInputAdapter implements NativeKeyListener, KeyListener {
 
+    /** Creates an adapter for forwarding native key events to AWT listeners. */
+    public SwingKeyAdapter() { }
+
     @Override
     public void nativeKeyTyped(NativeKeyEvent nativeEvent) {
         this.keyTyped(this.getJavaKeyEvent(nativeEvent));
@@ -53,6 +56,11 @@ public class SwingKeyAdapter extends AbstractSwingInputAdapter implements Native
     @Override
     public void keyReleased(KeyEvent keyEvent) {}
 
+    /**
+     * Converts a native key event to its AWT equivalent.
+     * @param nativeEvent the native key event
+     * @return the corresponding AWT key event
+     */
     protected KeyEvent getJavaKeyEvent(NativeKeyEvent nativeEvent) {
         int keyLocation = KeyEvent.KEY_LOCATION_UNKNOWN;
         switch (nativeEvent.getKeyLocation()) {

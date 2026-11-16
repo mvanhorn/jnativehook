@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/** Global native keyboard and mouse listeners with optional AWT event adapters. */
 module com.github.kwhat.jnativehook {
 	exports com.github.kwhat.jnativehook;
 	exports com.github.kwhat.jnativehook.dispatcher;

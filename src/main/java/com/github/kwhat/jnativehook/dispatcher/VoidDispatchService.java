@@ -41,6 +41,7 @@ public class VoidDispatchService extends AbstractExecutorService {
     private boolean running = true;
     private int active;
 
+    /** Creates a dispatcher that executes tasks synchronously on the calling thread. */
     public VoidDispatchService() { }
 
     public synchronized void shutdown() {

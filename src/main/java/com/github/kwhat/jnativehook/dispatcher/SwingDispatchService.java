@@ -43,6 +43,7 @@ public class SwingDispatchService extends AbstractExecutorService {
     private int active;
     private final Map<Runnable, Runnable> pending = new LinkedHashMap<>();
 
+    /** Creates a dispatcher that queues tasks on the AWT event dispatch thread. */
     public SwingDispatchService() { }
 
     public synchronized void shutdown() {

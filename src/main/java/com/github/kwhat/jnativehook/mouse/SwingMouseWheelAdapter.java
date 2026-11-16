@@ -30,6 +30,9 @@ import java.awt.event.MouseWheelListener;
 public class SwingMouseWheelAdapter extends SwingMouseAdapter implements NativeMouseWheelListener,
     MouseWheelListener {
 
+    /** Creates an adapter for forwarding native wheel events to AWT listeners. */
+    public SwingMouseWheelAdapter() { }
+
     @Override
     public void nativeMouseWheelMoved(NativeMouseWheelEvent nativeEvent) {
         this.mouseWheelMoved(this.getJavaMouseWheelEvent(nativeEvent));
@@ -38,6 +41,11 @@ public class SwingMouseWheelAdapter extends SwingMouseAdapter implements NativeM
     @Override
     public void mouseWheelMoved(MouseWheelEvent mouseWheelEvent) {}
 
+    /**
+     * Converts a native wheel event while preserving fractional rotation.
+     * @param nativeEvent the native wheel event
+     * @return the corresponding AWT mouse wheel event
+     */
     protected MouseWheelEvent getJavaMouseWheelEvent(NativeMouseWheelEvent nativeEvent) {
         int scrollType = MouseWheelEvent.WHEEL_UNIT_SCROLL;
         if (nativeEvent.getScrollType() == NativeMouseWheelEvent.WHEEL_BLOCK_SCROLL) {
