@@ -19,13 +19,13 @@ package com.github.kwhat.jnativehook.dispatcher;
 
 import com.github.kwhat.jnativehook.GlobalScreen;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.AbstractExecutorService;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.RejectedExecutionException;
-import java.util.Objects;
-import java.util.Map;
 import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.AbstractExecutorService;
+import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.TimeUnit;
 import javax.swing.SwingUtilities;
 
 /**
