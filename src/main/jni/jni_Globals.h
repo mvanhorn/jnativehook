@@ -40,6 +40,7 @@ typedef struct _com_github_kwhat_jnativehook_GlobalScreen {
 typedef struct com_github_kwhat_jnativehook_GlobalScreen$NativeHookThread {
     jclass cls;
     jmethodID dispatchEvent;
+    jmethodID setNativeHookState;
 } NativeHookThread;
 
 typedef struct _com_github_kwhat_jnativehook_NativeHookException {
@@ -59,6 +60,7 @@ typedef struct _com_github_kwhat_jnativehook_NativeInputEvent {
     jmethodID init;
     jmethodID getID;
     jmethodID getModifiers;
+    jfieldID modifiers;
 } NativeInputEvent;
 
 typedef struct _com_github_kwhat_jnativehook_keyboard_NativeKeyEvent {
@@ -78,6 +80,8 @@ typedef struct _com_github_kwhat_jnativehook_mouse_NativeMouseEvent {
     jmethodID getClickCount;
     jmethodID getX;
     jmethodID getY;
+    jfieldID deltaX;
+    jfieldID deltaY;
 } NativeMouseEvent;
 
 typedef struct _com_github_kwhat_jnativehook_mouse_NativeMouseWheelEvent {
@@ -87,6 +91,7 @@ typedef struct _com_github_kwhat_jnativehook_mouse_NativeMouseWheelEvent {
     jmethodID getScrollAmount;
     jmethodID getScrollType;
     jmethodID getWheelRotation;
+    jmethodID getWheelDirection;
     jmethodID getPreciseWheelRotation;
 } NativeMouseWheelEvent;
 
@@ -108,6 +113,7 @@ typedef struct _java_lang_System {
 
 typedef struct _java_util_logging_Logger {
     jclass cls;
+    jobject object;
     jmethodID getLogger;
     jmethodID fine;
     jmethodID info;
@@ -128,6 +134,10 @@ extern Object *java_lang_Object;
 extern Integer *java_lang_Integer;
 extern System *java_lang_System;
 extern Logger *java_util_logging_Logger;
+
+// Attach native callback threads only for the duration of callback delivery.
+extern jint jni_GetCallbackEnv(JNIEnv **env, jboolean *attached);
+extern void jni_ReleaseCallbackEnv(JNIEnv *env, jboolean attached);
 
 // Create all of the JNI global references used throughout the native library.
 extern int jni_CreateGlobals(JNIEnv *env);

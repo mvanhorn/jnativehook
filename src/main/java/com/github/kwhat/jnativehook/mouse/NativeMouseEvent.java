@@ -236,6 +236,19 @@ public class NativeMouseEvent extends NativeInputEvent {
         this.button = button;
     }
 
+    private int deltaX;
+    private int deltaY;
+
+    /** @return native horizontal motion since the previous event, or zero if unavailable */
+    public int getDeltaX() {
+        return deltaX;
+    }
+
+    /** @return native vertical motion since the previous event, or zero if unavailable */
+    public int getDeltaY() {
+        return deltaY;
+    }
+
     /**
      * Returns which, if any, of the mouse buttons has changed state.
      *

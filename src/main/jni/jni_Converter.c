@@ -91,97 +91,206 @@ jint jni_ConvertToNativeType(jint javaType, event_type *nativeType) {
     return status;
 }
 
-jint jni_ConvertToJavaLocation(unsigned short int *nativeKeyCode, jint *javaKeyLocation) {
-    jint status = JNI_ERR;
+/* Keep the public Java keycodes stable across libuiohook's keycode revision.
+ * Location distinguishes keypad and left/right variants in Java. */
+#define KEY(native, java, location) { native, com_github_kwhat_jnativehook_keyboard_NativeKeyEvent_##java, com_github_kwhat_jnativehook_keyboard_NativeKeyEvent_LOCATION_##location }
+static const struct { uint16_t native; jint java; jint location; } keycodes[] = {
+    KEY(VC_ESCAPE, VC_ESCAPE, STANDARD),
+    KEY(VC_F1, VC_F1, STANDARD),
+    KEY(VC_F2, VC_F2, STANDARD),
+    KEY(VC_F3, VC_F3, STANDARD),
+    KEY(VC_F4, VC_F4, STANDARD),
+    KEY(VC_F5, VC_F5, STANDARD),
+    KEY(VC_F6, VC_F6, STANDARD),
+    KEY(VC_F7, VC_F7, STANDARD),
+    KEY(VC_F8, VC_F8, STANDARD),
+    KEY(VC_F9, VC_F9, STANDARD),
+    KEY(VC_F10, VC_F10, STANDARD),
+    KEY(VC_F11, VC_F11, STANDARD),
+    KEY(VC_F12, VC_F12, STANDARD),
+    KEY(VC_F13, VC_F13, STANDARD),
+    KEY(VC_F14, VC_F14, STANDARD),
+    KEY(VC_F15, VC_F15, STANDARD),
+    KEY(VC_F16, VC_F16, STANDARD),
+    KEY(VC_F17, VC_F17, STANDARD),
+    KEY(VC_F18, VC_F18, STANDARD),
+    KEY(VC_F19, VC_F19, STANDARD),
+    KEY(VC_F20, VC_F20, STANDARD),
+    KEY(VC_F21, VC_F21, STANDARD),
+    KEY(VC_F22, VC_F22, STANDARD),
+    KEY(VC_F23, VC_F23, STANDARD),
+    KEY(VC_F24, VC_F24, STANDARD),
+    KEY(VC_BACKQUOTE, VC_BACKQUOTE, STANDARD),
+    KEY(VC_1, VC_1, STANDARD),
+    KEY(VC_2, VC_2, STANDARD),
+    KEY(VC_3, VC_3, STANDARD),
+    KEY(VC_4, VC_4, STANDARD),
+    KEY(VC_5, VC_5, STANDARD),
+    KEY(VC_6, VC_6, STANDARD),
+    KEY(VC_7, VC_7, STANDARD),
+    KEY(VC_8, VC_8, STANDARD),
+    KEY(VC_9, VC_9, STANDARD),
+    KEY(VC_0, VC_0, STANDARD),
+    KEY(VC_MINUS, VC_MINUS, STANDARD),
+    KEY(VC_EQUALS, VC_EQUALS, STANDARD),
+    KEY(VC_BACKSPACE, VC_BACKSPACE, STANDARD),
+    KEY(VC_TAB, VC_TAB, STANDARD),
+    KEY(VC_CAPS_LOCK, VC_CAPS_LOCK, STANDARD),
+    KEY(VC_A, VC_A, STANDARD),
+    KEY(VC_B, VC_B, STANDARD),
+    KEY(VC_C, VC_C, STANDARD),
+    KEY(VC_D, VC_D, STANDARD),
+    KEY(VC_E, VC_E, STANDARD),
+    KEY(VC_F, VC_F, STANDARD),
+    KEY(VC_G, VC_G, STANDARD),
+    KEY(VC_H, VC_H, STANDARD),
+    KEY(VC_I, VC_I, STANDARD),
+    KEY(VC_J, VC_J, STANDARD),
+    KEY(VC_K, VC_K, STANDARD),
+    KEY(VC_L, VC_L, STANDARD),
+    KEY(VC_M, VC_M, STANDARD),
+    KEY(VC_N, VC_N, STANDARD),
+    KEY(VC_O, VC_O, STANDARD),
+    KEY(VC_P, VC_P, STANDARD),
+    KEY(VC_Q, VC_Q, STANDARD),
+    KEY(VC_R, VC_R, STANDARD),
+    KEY(VC_S, VC_S, STANDARD),
+    KEY(VC_T, VC_T, STANDARD),
+    KEY(VC_U, VC_U, STANDARD),
+    KEY(VC_V, VC_V, STANDARD),
+    KEY(VC_W, VC_W, STANDARD),
+    KEY(VC_X, VC_X, STANDARD),
+    KEY(VC_Y, VC_Y, STANDARD),
+    KEY(VC_Z, VC_Z, STANDARD),
+    KEY(VC_OPEN_BRACKET, VC_OPEN_BRACKET, STANDARD),
+    KEY(VC_CLOSE_BRACKET, VC_CLOSE_BRACKET, STANDARD),
+    KEY(VC_BACK_SLASH, VC_BACK_SLASH, STANDARD),
+    KEY(VC_SEMICOLON, VC_SEMICOLON, STANDARD),
+    KEY(VC_QUOTE, VC_QUOTE, STANDARD),
+    KEY(VC_ENTER, VC_ENTER, STANDARD),
+    KEY(VC_COMMA, VC_COMMA, STANDARD),
+    KEY(VC_PERIOD, VC_PERIOD, STANDARD),
+    KEY(VC_SLASH, VC_SLASH, STANDARD),
+    KEY(VC_SPACE, VC_SPACE, STANDARD),
+    KEY(VC_PRINTSCREEN, VC_PRINTSCREEN, STANDARD),
+    KEY(VC_SCROLL_LOCK, VC_SCROLL_LOCK, STANDARD),
+    KEY(VC_PAUSE, VC_PAUSE, STANDARD),
+    KEY(VC_INSERT, VC_INSERT, STANDARD),
+    KEY(VC_DELETE, VC_DELETE, STANDARD),
+    KEY(VC_HOME, VC_HOME, STANDARD),
+    KEY(VC_END, VC_END, STANDARD),
+    KEY(VC_PAGE_UP, VC_PAGE_UP, STANDARD),
+    KEY(VC_PAGE_DOWN, VC_PAGE_DOWN, STANDARD),
+    KEY(VC_UP, VC_UP, STANDARD),
+    KEY(VC_LEFT, VC_LEFT, STANDARD),
+    KEY(VC_BEGIN, VC_CLEAR, STANDARD),
+    KEY(VC_RIGHT, VC_RIGHT, STANDARD),
+    KEY(VC_DOWN, VC_DOWN, STANDARD),
+    KEY(VC_NUM_LOCK, VC_NUM_LOCK, NUMPAD),
+    KEY(VC_KP_DECIMAL, VC_SEPARATOR, NUMPAD),
+    KEY(VC_SHIFT_L, VC_SHIFT, LEFT),
+    KEY(VC_CONTROL_L, VC_CONTROL, LEFT),
+    KEY(VC_ALT_L, VC_ALT, LEFT),
+    KEY(VC_META_L, VC_META, LEFT),
+    KEY(VC_CONTEXT_MENU, VC_CONTEXT_MENU, STANDARD),
+    KEY(VC_POWER, VC_POWER, STANDARD),
+    KEY(VC_SLEEP, VC_SLEEP, STANDARD),
+    KEY(VC_WAKE, VC_WAKE, STANDARD),
+    KEY(VC_MEDIA_PLAY, VC_MEDIA_PLAY, STANDARD),
+    KEY(VC_MEDIA_STOP, VC_MEDIA_STOP, STANDARD),
+    KEY(VC_MEDIA_PREVIOUS, VC_MEDIA_PREVIOUS, STANDARD),
+    KEY(VC_MEDIA_NEXT, VC_MEDIA_NEXT, STANDARD),
+    KEY(VC_MEDIA_SELECT, VC_MEDIA_SELECT, STANDARD),
+    KEY(VC_MEDIA_EJECT, VC_MEDIA_EJECT, STANDARD),
+    KEY(VC_VOLUME_MUTE, VC_VOLUME_MUTE, STANDARD),
+    KEY(VC_VOLUME_UP, VC_VOLUME_UP, STANDARD),
+    KEY(VC_VOLUME_DOWN, VC_VOLUME_DOWN, STANDARD),
+    KEY(VC_APP_MAIL, VC_APP_MAIL, STANDARD),
+    KEY(VC_APP_CALCULATOR, VC_APP_CALCULATOR, STANDARD),
+    KEY(VC_APP_MUSIC, VC_APP_MUSIC, STANDARD),
+    KEY(VC_APP_PICTURES, VC_APP_PICTURES, STANDARD),
+    KEY(VC_BROWSER_SEARCH, VC_BROWSER_SEARCH, STANDARD),
+    KEY(VC_BROWSER_HOME, VC_BROWSER_HOME, STANDARD),
+    KEY(VC_BROWSER_BACK, VC_BROWSER_BACK, STANDARD),
+    KEY(VC_BROWSER_FORWARD, VC_BROWSER_FORWARD, STANDARD),
+    KEY(VC_BROWSER_STOP, VC_BROWSER_STOP, STANDARD),
+    KEY(VC_BROWSER_REFRESH, VC_BROWSER_REFRESH, STANDARD),
+    KEY(VC_BROWSER_FAVORITES, VC_BROWSER_FAVORITES, STANDARD),
+    KEY(VC_KATAKANA, VC_KATAKANA, STANDARD),
+    KEY(VC_UNDERSCORE, VC_UNDERSCORE, STANDARD),
+    KEY(VC_KANA, VC_FURIGANA, STANDARD),
+    KEY(VC_KANJI, VC_KANJI, STANDARD),
+    KEY(VC_HIRAGANA, VC_HIRAGANA, STANDARD),
+    KEY(VC_SUN_HELP, VC_SUN_HELP, STANDARD),
+    KEY(VC_SUN_STOP, VC_SUN_STOP, STANDARD),
+    KEY(VC_SUN_PROPS, VC_SUN_PROPS, STANDARD),
+    KEY(VC_SUN_FRONT, VC_SUN_FRONT, STANDARD),
+    KEY(VC_SUN_OPEN, VC_SUN_OPEN, STANDARD),
+    KEY(VC_SUN_FIND, VC_SUN_FIND, STANDARD),
+    KEY(VC_SUN_AGAIN, VC_SUN_AGAIN, STANDARD),
+    KEY(VC_SUN_UNDO, VC_SUN_UNDO, STANDARD),
+    KEY(VC_SUN_COPY, VC_SUN_COPY, STANDARD),
+    KEY(VC_SUN_INSERT, VC_SUN_INSERT, STANDARD),
+    KEY(VC_SUN_CUT, VC_SUN_CUT, STANDARD),
+    KEY(VC_SHIFT_R, VC_SHIFT, RIGHT),
+    KEY(VC_CONTROL_R, VC_CONTROL, RIGHT),
+    KEY(VC_ALT_R, VC_ALT, RIGHT),
+    KEY(VC_META_R, VC_META, RIGHT),
+    KEY(VC_KP_0, VC_0, NUMPAD),
+    KEY(VC_KP_1, VC_1, NUMPAD),
+    KEY(VC_KP_2, VC_2, NUMPAD),
+    KEY(VC_KP_3, VC_3, NUMPAD),
+    KEY(VC_KP_4, VC_4, NUMPAD),
+    KEY(VC_KP_5, VC_5, NUMPAD),
+    KEY(VC_KP_6, VC_6, NUMPAD),
+    KEY(VC_KP_7, VC_7, NUMPAD),
+    KEY(VC_KP_8, VC_8, NUMPAD),
+    KEY(VC_KP_9, VC_9, NUMPAD),
+    KEY(VC_KP_ENTER, VC_ENTER, NUMPAD),
+    KEY(VC_KP_COMMA, VC_COMMA, NUMPAD),
+    KEY(VC_KP_END, VC_END, NUMPAD),
+    KEY(VC_KP_DOWN, VC_DOWN, NUMPAD),
+    KEY(VC_KP_PAGE_DOWN, VC_PAGE_DOWN, NUMPAD),
+    KEY(VC_KP_LEFT, VC_LEFT, NUMPAD),
+    KEY(VC_KP_RIGHT, VC_RIGHT, NUMPAD),
+    KEY(VC_KP_HOME, VC_HOME, NUMPAD),
+    KEY(VC_KP_UP, VC_UP, NUMPAD),
+    KEY(VC_KP_PAGE_UP, VC_PAGE_UP, NUMPAD),
+    KEY(VC_KP_INSERT, VC_INSERT, NUMPAD),
+    KEY(VC_KP_DELETE, VC_DELETE, NUMPAD),
+    KEY(VC_KP_MULTIPLY, VC_KP_MULTIPLY, NUMPAD),
+    KEY(VC_KP_ADD, VC_KP_ADD, NUMPAD),
+    KEY(VC_KP_SUBTRACT, VC_KP_SUBTRACT, NUMPAD),
+    KEY(VC_KP_DIVIDE, VC_KP_DIVIDE, NUMPAD),
+    KEY(VC_KP_CLEAR, VC_CLEAR, NUMPAD),
+    KEY(VC_KP_EQUALS, VC_KP_EQUALS, NUMPAD),
+    KEY(VC_KP_SEPARATOR, VC_KP_SEPARATOR, NUMPAD),
+};
+#undef KEY
 
-    if (nativeKeyCode != NULL && javaKeyLocation != NULL) {
-        switch (*nativeKeyCode) {
-            case VC_SHIFT_L:
-            case VC_CONTROL_L:
-            case VC_ALT_L:
-            case VC_META_L:
-                *javaKeyLocation = com_github_kwhat_jnativehook_keyboard_NativeKeyEvent_LOCATION_LEFT;
-                break;
-
-            case VC_SHIFT_R:
-            case VC_CONTROL_R:
-            case VC_ALT_R:
-                *nativeKeyCode ^= 0x0E00;
-                *javaKeyLocation = com_github_kwhat_jnativehook_keyboard_NativeKeyEvent_LOCATION_RIGHT;
-                break;
-
-            case VC_META_R:
-                *nativeKeyCode -= 1;
-                *javaKeyLocation = com_github_kwhat_jnativehook_keyboard_NativeKeyEvent_LOCATION_RIGHT;
-                break;
-
-            case VC_KP_COMMA:
-                *nativeKeyCode = VC_COMMA;
-                /* fall-thru */
-
-            case VC_NUM_LOCK:
-            case VC_KP_SEPARATOR:
-                *javaKeyLocation = com_github_kwhat_jnativehook_keyboard_NativeKeyEvent_LOCATION_NUMPAD;
-                break;
-
-            case VC_KP_ENTER:
-            case VC_KP_MULTIPLY:
-            case VC_KP_ADD:
-            case VC_KP_SUBTRACT:
-            case VC_KP_DIVIDE:
-
-            case VC_KP_DOWN:
-            case VC_KP_LEFT:
-            case VC_KP_CLEAR:
-            case VC_KP_RIGHT:
-            case VC_KP_UP:
-                *nativeKeyCode ^= 0x0E00;
-                *javaKeyLocation = com_github_kwhat_jnativehook_keyboard_NativeKeyEvent_LOCATION_NUMPAD;
-                break;
-
-            case VC_KP_0:
-                *nativeKeyCode = VC_0;
-                *javaKeyLocation = com_github_kwhat_jnativehook_keyboard_NativeKeyEvent_LOCATION_NUMPAD;
-                break;
-
-            case VC_KP_1:
-            case VC_KP_2:
-            case VC_KP_3:
-                *nativeKeyCode -= ((VC_KP_1 - VC_1) - (VC_KP_4 - VC_4) ); // 0x4D - 0x46
-                // FIXME Should this fall though?
-                /* fall-thru */
-
-            case VC_KP_4:
-            case VC_KP_5:
-            case VC_KP_6:
-                *nativeKeyCode -= ((VC_KP_4 - VC_4) - (VC_KP_7 - VC_7) ); // 0x46 - 0x3F
-                // FIXME Should this fall though?
-                /* fall-thru */
-
-            case VC_KP_7:
-            case VC_KP_8:
-            case VC_KP_9:
-                *nativeKeyCode -= (VC_KP_7 - VC_7); // 0x3F
-                *javaKeyLocation = com_github_kwhat_jnativehook_keyboard_NativeKeyEvent_LOCATION_NUMPAD;
-                break;
-
-            case VC_KP_END:
-            case VC_KP_PAGE_DOWN:
-            case VC_KP_HOME:
-            case VC_KP_PAGE_UP:
-            case VC_KP_INSERT:
-            case VC_KP_DELETE:
-                *nativeKeyCode ^= 0xE000;
-                *javaKeyLocation = com_github_kwhat_jnativehook_keyboard_NativeKeyEvent_LOCATION_NUMPAD;
-                break;
-
-            default:
-                *javaKeyLocation = com_github_kwhat_jnativehook_keyboard_NativeKeyEvent_LOCATION_STANDARD;
-                break;
+jint jni_ConvertToJavaLocation(unsigned short *keycode, jint *location) {
+    if (keycode == NULL || location == NULL) return JNI_ERR;
+    for (size_t i = 0; i < sizeof(keycodes) / sizeof(keycodes[0]); i++) {
+        if (keycodes[i].native == *keycode) {
+            *keycode = (uint16_t) keycodes[i].java;
+            *location = keycodes[i].location;
+            return JNI_OK;
         }
-
-        status = JNI_OK;
     }
+    *keycode = com_github_kwhat_jnativehook_keyboard_NativeKeyEvent_VC_UNDEFINED;
+    *location = com_github_kwhat_jnativehook_keyboard_NativeKeyEvent_LOCATION_UNKNOWN;
+    return JNI_OK;
+}
 
-    return status;
+jint jni_ConvertToNativeKeycode(jint keycode, jint location, uint16_t *native) {
+    if (native == NULL) return JNI_ERR;
+    for (size_t i = 0; i < sizeof(keycodes) / sizeof(keycodes[0]); i++) {
+        if (keycodes[i].java == keycode && (keycodes[i].location == location ||
+                (location == com_github_kwhat_jnativehook_keyboard_NativeKeyEvent_LOCATION_UNKNOWN))) {
+            *native = keycodes[i].native;
+            return JNI_OK;
+        }
+    }
+    *native = VC_UNDEFINED;
+    return JNI_ERR;
 }

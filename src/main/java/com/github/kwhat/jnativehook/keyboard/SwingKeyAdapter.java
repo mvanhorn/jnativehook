@@ -75,6 +75,24 @@ public class SwingKeyAdapter extends AbstractSwingInputAdapter implements Native
 
         int keyCode = KeyEvent.VK_UNDEFINED;
         switch (nativeEvent.getKeyCode()) {
+            case NativeKeyEvent.VC_KP_MULTIPLY:
+                keyCode = KeyEvent.VK_MULTIPLY;
+                break;
+            case NativeKeyEvent.VC_KP_ADD:
+                keyCode = KeyEvent.VK_ADD;
+                break;
+            case NativeKeyEvent.VC_KP_SUBTRACT:
+                keyCode = KeyEvent.VK_SUBTRACT;
+                break;
+            case NativeKeyEvent.VC_KP_DIVIDE:
+                keyCode = KeyEvent.VK_DIVIDE;
+                break;
+            case NativeKeyEvent.VC_KP_EQUALS:
+                keyCode = KeyEvent.VK_EQUALS;
+                break;
+            case NativeKeyEvent.VC_KP_SEPARATOR:
+                keyCode = KeyEvent.VK_SEPARATOR;
+                break;
             case NativeKeyEvent.VC_ESCAPE:
                 keyCode = KeyEvent.VK_ESCAPE;
                 break;

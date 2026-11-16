@@ -154,13 +154,13 @@
 
 /** Begin Numeric Zone */
 #define com_github_kwhat_jnativehook_keyboard_NativeKeyEvent_VC_NUM_LOCK                     0x0045
-#define com_github_kwhat_jnativehook_keyboard_NativeKeyEvent_VC_KP_DIVIDE                    0x0E35
-#define com_github_kwhat_jnativehook_keyboard_NativeKeyEvent_VC_KP_MULTIPLY                  0x0037
-#define com_github_kwhat_jnativehook_keyboard_NativeKeyEvent_VC_KP_SUBTRACT                  0x004A
-#define com_github_kwhat_jnativehook_keyboard_NativeKeyEvent_VC_KP_EQUALS                    0x0E0D
-#define com_github_kwhat_jnativehook_keyboard_NativeKeyEvent_VC_KP_ADD                       0x004E
+#define com_github_kwhat_jnativehook_keyboard_NativeKeyEvent_VC_KP_DIVIDE                    0xEE6F
+#define com_github_kwhat_jnativehook_keyboard_NativeKeyEvent_VC_KP_MULTIPLY                  0xEE6A
+#define com_github_kwhat_jnativehook_keyboard_NativeKeyEvent_VC_KP_SUBTRACT                  0xEE6D
+#define com_github_kwhat_jnativehook_keyboard_NativeKeyEvent_VC_KP_EQUALS                    0xEE7C
+#define com_github_kwhat_jnativehook_keyboard_NativeKeyEvent_VC_KP_ADD                       0xEE6B
 #define com_github_kwhat_jnativehook_keyboard_NativeKeyEvent_VC_KP_ENTER                     0x0E1C
-#define com_github_kwhat_jnativehook_keyboard_NativeKeyEvent_VC_KP_SEPARATOR                 0x0053
+#define com_github_kwhat_jnativehook_keyboard_NativeKeyEvent_VC_KP_SEPARATOR                 0xEE6C
 
 #define com_github_kwhat_jnativehook_keyboard_NativeKeyEvent_VC_KP_1                         0x004F
 #define com_github_kwhat_jnativehook_keyboard_NativeKeyEvent_VC_KP_2                         0x0050
@@ -243,5 +243,17 @@
 
 /** This is used to indicate that the keyChar is undefined. */
 #define com_github_kwhat_jnativehook_keyboard_NativeKeyEvent_CHAR_UNDEFINED                  0xFFFF
+
+#define com_github_kwhat_jnativehook_keyboard_NativeKeyEvent_VC_CLEAR 0xE04C
+
+#define com_github_kwhat_jnativehook_keyboard_NativeKeyEvent_VC_SEPARATOR 0x0053
+
+#define com_github_kwhat_jnativehook_keyboard_NativeKeyEvent_VC_SHIFT 0x002A
+
+#define com_github_kwhat_jnativehook_keyboard_NativeKeyEvent_VC_CONTROL 0x001D
+
+#define com_github_kwhat_jnativehook_keyboard_NativeKeyEvent_VC_ALT 0x0038
+
+#define com_github_kwhat_jnativehook_keyboard_NativeKeyEvent_VC_META 0x0E5B
 
 #endif
