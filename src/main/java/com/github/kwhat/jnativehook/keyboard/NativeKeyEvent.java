@@ -322,6 +322,14 @@ public class NativeKeyEvent extends NativeInputEvent {
     /**
      * This value is used to indicate that the keyCode is unknown.
      */
+    /** Distinct keypad arithmetic codes, paired with KEY_LOCATION_NUMPAD. */
+    public static final int VC_KP_MULTIPLY = 0xEE6A;
+    public static final int VC_KP_ADD = 0xEE6B;
+    public static final int VC_KP_SEPARATOR = 0xEE6C;
+    public static final int VC_KP_SUBTRACT = 0xEE6D;
+    public static final int VC_KP_DIVIDE = 0xEE6F;
+    public static final int VC_KP_EQUALS = 0xEE7C;
+
     public static final int VC_UNDEFINED = 0x0000;
 
     /**
@@ -469,6 +477,12 @@ public class NativeKeyEvent extends NativeInputEvent {
     public static String getKeyText(int keyCode) {
         // Lookup text values.
         switch (keyCode) {
+            case VC_KP_MULTIPLY: return "NumPad Multiply";
+            case VC_KP_ADD: return "NumPad Add";
+            case VC_KP_SUBTRACT: return "NumPad Subtract";
+            case VC_KP_DIVIDE: return "NumPad Divide";
+            case VC_KP_EQUALS: return "NumPad Equals";
+            case VC_KP_SEPARATOR: return "NumPad Separator";
             case VC_ESCAPE:
                 return Toolkit.getProperty("AWT.escape", "Escape");
 
